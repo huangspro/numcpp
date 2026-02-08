@@ -27,11 +27,24 @@ public:
   static void sin(numcpp);
   static void cos(numcpp);
   static void tan(numcpp);
+  static void arsin(numcpp);
+  static void arcos(numcpp);
+  static void artan(numcpp);
+  static void sqrt(numcpp);
+  static void square(numcpp);
+  static void cube(numcpp);
+  static void exp(numcpp);
+  static void ln(numcpp);
+  static void lg(numcpp);
+  
   static void sum(numcpp);
   static void ave(numcpp);
   static void max(numcpp);
   static void min(numcpp);
-
+  static void var(numcpp);
+  static void standard(numcpp);
+  
+  static void floor(numcpp);
   ~numcpp();
 };
 
