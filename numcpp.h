@@ -11,6 +11,7 @@ public:
   std::vector<int> shape;  //store the shape of the multiple-dimension array
   int sum;                 //the sum of shape
   int dimension;           //the dimension of the array
+  int number;              //number of elements in array
   double* data;
   
   //construntor==========================================================================================================
@@ -23,17 +24,15 @@ public:
   void print(int shape_info);//print the whole array, using recursion
   
   //operation to elements================================================================================================
-  static void sqrt();
-  static void sin();
-  static void cos();
-  static void tan();
-  static void sqrt();
-  static void sin();
-  static void sqrt();
-  static void sin();
-  ~numcpp(){
-    delete[] data;
-  }
+  static void sin(numcpp);
+  static void cos(numcpp);
+  static void tan(numcpp);
+  static void sum(numcpp);
+  static void ave(numcpp);
+  static void max(numcpp);
+  static void min(numcpp);
+
+  ~numcpp();
 };
 
 #endif

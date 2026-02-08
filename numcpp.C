@@ -2,14 +2,17 @@
 
 //construntor
 numcpp::numcpp(std::initializer_list<int> s){
-int tem = 0;
+  int tem = 0;
+  int temm = 1;
   for(int i: s){
     tem += i;
+    temm *= i;
     shape.push_back(i);
   }
   data = new double[tem];
   sum = tem;
   dimension = shape.size();
+  number = temm;
 }
   
 //get index
@@ -58,10 +61,14 @@ bool numcpp::set(std::initializer_list<int> indexs, double d){
 void numcpp::print(int shape_info){
   
 }
+  static void sin(numcpp);
+  static void cos(numcpp);
+  static void tan(numcpp);
+  static void sum(numcpp);
+  static void ave(numcpp);
+  static void max(numcpp);
+  static void min(numcpp);
   
-//operation to elements
-static void numcpp::sqrt()
-  
-~numcpp(){
+numcpp::~numcpp(){
   delete[] data;
 }
