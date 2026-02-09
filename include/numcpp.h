@@ -9,14 +9,15 @@
 class numcpp{
 public:
   std::vector<int> shape;  //store the shape of the multiple-dimension array
-  int sum;                 //the sum of shape
+  int sum_shape;                 //the sum of shape
   int dimension;           //the dimension of the array
   int number;              //number of elements in array
   double* data;
   
   //construntor==========================================================================================================
   numcpp(std::initializer_list<int> s);
-  
+  numcpp(std::vector<int> s);
+  numcpp(std::initializer_list<int> s, int n);
   //=====================================================================================================================
   int getIndex(std::initializer_list<int> indexs);//get index
   double get(std::initializer_list<int> indexs);//get element by indexs
@@ -24,27 +25,35 @@ public:
   void print(int shape_info);//print the whole array, using recursion
   
   //operation to elements================================================================================================
-  static void sin(numcpp);
-  static void cos(numcpp);
-  static void tan(numcpp);
-  static void arsin(numcpp);
-  static void arcos(numcpp);
-  static void artan(numcpp);
-  static void sqrt(numcpp);
-  static void square(numcpp);
-  static void cube(numcpp);
-  static void exp(numcpp);
-  static void ln(numcpp);
-  static void lg(numcpp);
+  static void sin(numcpp&);
+  static void cos(numcpp&);
+  static void tan(numcpp&);
+  static void arsin(numcpp&);
+  static void arcos(numcpp&);
+  static void artan(numcpp&);
+  static void sqrt(numcpp&);
+  static void square(numcpp&);
+  static void cube(numcpp&);
+  static void exp(numcpp&);
+  static void ln(numcpp&);
+  static void lg(numcpp&);
   
-  static void sum(numcpp);
-  static void ave(numcpp);
-  static void max(numcpp);
-  static void min(numcpp);
-  static void var(numcpp);
-  static void standard(numcpp);
-  
-  static void floor(numcpp);
+  static double sum(numcpp&);
+  static double ave(numcpp&);
+  static double max(numcpp&);
+  static double min(numcpp&);
+  static double var(numcpp&);
+  static double standard(numcpp&);
+
+  //operator overload, element-wise operation
+  numcpp& operator+(numcpp& other);
+  numcpp& operator-(numcpp& other);
+  numcpp& operator*(numcpp& other);
+  numcpp& operator/(numcpp& other);
+
+  //tool method
+  static bool chech_is_shape_same(numcpp&, numcpp&);
+
   ~numcpp();
 };
 
