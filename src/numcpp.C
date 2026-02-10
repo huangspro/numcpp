@@ -9,7 +9,7 @@ numcpp::numcpp(std::initializer_list<int> s){
     temm *= i;
     shape.push_back(i);
   }
-  data = new double[tem];
+  data = new double[temm];
   sum_shape = tem;
   dimension = shape.size();
   number = temm;
@@ -22,7 +22,7 @@ numcpp::numcpp(std::vector<int> s){
     temm *= i;
     shape.push_back(i);
   }
-  data = new double[tem];
+  data = new double[temm];
   sum_shape = tem;
   dimension = shape.size();
   number = temm;
@@ -35,11 +35,63 @@ numcpp::numcpp(std::initializer_list<int> s, int n){
     temm *= i;
     shape.push_back(i);
   }
-  data = new double[tem];
+  data = new double[temm];
   sum_shape = tem;
   dimension = shape.size();
   number = temm;
   for(int i=0;i<number;i++)data[i] = n;
+}
+numcpp::numcpp(numcpp& other){
+  this->shape = other.shape;
+  this->number = other.number;
+  this->sum_shape = other.sum_shape;
+  this->dimension = other.dimension;
+  data = new double[number];
+  for(int i=0;i<number;i++)this->data[i] = other.data[i];
+}
+
+numcpp::numcpp(std::initializer_list<int> s, double mean, double variance){
+  //seed random
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  std::normal_distribution<> distrib(mean, variance);
+  int tem = 0;
+  int temm = 1;
+  for(int i: s){
+    tem += i;
+    temm *= i;
+    shape.push_back(i);
+  }
+  data = new double[temm];
+  sum_shape = tem;
+  dimension = shape.size();
+  number = temm;
+  for(int i=0;i<number;i++)data[i] = distrib(gen);
+}
+
+numcpp::numcpp(std::initializer_list<int> s, double start, double end, std::string type){
+  //seed random
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  int tem = 0;
+  int temm = 1;
+  for(int i: s){
+    tem += i;
+    temm *= i;
+    shape.push_back(i);
+  }
+  data = new double[temm];
+  sum_shape = tem;
+  dimension = shape.size();
+  number = temm;
+  
+  if(type == "int"){
+    std::uniform_int_distribution<int> distrib(start, end);
+    for(int i=0;i<number;i++)data[i] = (double)distrib(gen);
+  }else{
+    std::uniform_real_distribution<double> distrib(start, end);
+    for(int i=0;i<number;i++)data[i] = distrib(gen);
+  }
 }
 
 //get index
@@ -85,83 +137,108 @@ bool numcpp::set(std::initializer_list<int> indexs, double d){
 }
   
 //print the whole array, using recursion
-void numcpp::print(int shape_info){
+//according to the formula
+void numcpp::print(){
+  std::vector<int> prepare;
+  int tem = shape[shape.size()-1];
+  for(int i=0;i<dimension-1;i++){
+    prepare.push_back(tem);
+    tem = (tem + 2) * shape[shape.size()-i-2];
+  }
+  prepare.push_back(tem);std::cout<<tem<<std::endl;
+  std::string result = "";
+  for(int i=0;i<number;i++){
+    result += "#";
+  }
   
+  for(int i=0;i<dimension;i++){
+    int temm = result.length();
+    for(int ii=temm;ii>0;ii--){  //operate reversely
+      if(ii==0)result.insert(ii, "[");
+      else if(ii==result.length()-1)result.insert(ii, "]");
+      else{
+        if(ii%prepare[i] == 0)result.insert(ii, "][");
+      }
+    }
+  }
+  std::cout<<result<<std::flush;
 }
 
-void numcpp::sin(numcpp& n){
+//================================================================================================
+
+void numcpp::sin(numcpp n){
   for(int i=0;i<n.number;i++){
     n.data[i] = std::sin(n.data[i]);
   }
 }
 
-void numcpp::cos(numcpp& n){
+void numcpp::cos(numcpp n){
   for(int i=0;i<n.number;i++){
     n.data[i] = std::cos(n.data[i]);
   }
 }
 
-void numcpp::tan(numcpp& n){
+void numcpp::tan(numcpp n){
   for(int i=0;i<n.number;i++){
     n.data[i] = std::tan(n.data[i]);
   }
 }
 
-void numcpp::arsin(numcpp& n){
+void numcpp::arsin(numcpp n){
   for(int i=0;i<n.number;i++){
     n.data[i] = std::asin(n.data[i]);
   }
 }
 
-void numcpp::arcos(numcpp& n){
+void numcpp::arcos(numcpp n){
   for(int i=0;i<n.number;i++){
     n.data[i] = std::acos(n.data[i]);
   }
 }
 
-void numcpp::artan(numcpp& n){
+void numcpp::artan(numcpp n){
   for(int i=0;i<n.number;i++){
     n.data[i] = std::atan(n.data[i]);
   }
 }
 
-void numcpp::sqrt(numcpp& n){
+void numcpp::sqrt(numcpp n){
   for(int i=0;i<n.number;i++){
     n.data[i] = std::sqrt(n.data[i]);
   }
 }
 
-void numcpp::square(numcpp& n){
+void numcpp::square(numcpp n){
   for(int i=0;i<n.number;i++){
     n.data[i] = n.data[i] * n.data[i];
   }
 }
 
-void numcpp::cube(numcpp& n){
+void numcpp::cube(numcpp n){
   for(int i=0;i<n.number;i++){
     n.data[i] = n.data[i] * n.data[i] * n.data[i];
   }
 }
 
-void numcpp::exp(numcpp& n){
+void numcpp::exp(numcpp n){
   for(int i=0;i<n.number;i++){
     n.data[i] = std::exp(n.data[i]);
   }
 }
 
-void numcpp::ln(numcpp& n){
+void numcpp::ln(numcpp n){
   for(int i=0;i<n.number;i++){
     n.data[i] = std::log(n.data[i]);
   }
 }
 
-void numcpp::lg(numcpp& n){
+void numcpp::lg(numcpp n){
   for(int i=0;i<n.number;i++){
     n.data[i] = std::log10(n.data[i]);
   }
 }
 
-double numcpp::sum(numcpp& n){
+double numcpp::sum(numcpp n){
   double result = 0;
   for(int i=0;i<n.number;i++){
     result += n.data[i];
@@ -169,7 +246,7 @@ double numcpp::sum(numcpp& n){
   return result;
 }
 
-double numcpp::ave(numcpp& n){
+double numcpp::ave(numcpp n){
   double sum = 0;
   for(int i=0;i<n.number;i++){
     sum += n.data[i];
@@ -177,7 +254,7 @@ double numcpp::ave(numcpp& n){
   return sum / n.number;
 }
 
-double numcpp::max(numcpp& n){
+double numcpp::max(numcpp n){
   double max_val = n.data[0];
   for(int i=1;i<n.number;i++){
     if(n.data[i] > max_val) max_val = n.data[i];
@@ -185,7 +262,7 @@ double numcpp::max(numcpp& n){
   return max_val;
 }
 
-double numcpp::min(numcpp& n){
+double numcpp::min(numcpp n){
   double min_val = n.data[0];
   for(int i=1;i<n.number;i++){
     if(n.data[i] < min_val) min_val = n.data[i];
@@ -193,7 +270,7 @@ double numcpp::min(numcpp& n){
   return min_val;
 }
 
-double numcpp::var(numcpp& n){
+double numcpp::var(numcpp n){
   double sum = 0, mean, variance = 0;
   for(int i=0;i<n.number;i++){
     sum += n.data[i];
@@ -205,7 +282,7 @@ double numcpp::var(numcpp& n){
   return variance / n.number;
 }
 
-double numcpp::standard(numcpp& n){
+double numcpp::standard(numcpp n){
   double sum = 0, mean, variance = 0;
   for(int i=0;i<n.number;i++){
     sum += n.data[i];
@@ -218,7 +295,7 @@ double numcpp::standard(numcpp& n){
 }
 
 
-bool numcpp::chech_is_shape_same(numcpp& n1, numcpp& n2){
+bool numcpp::chech_is_shape_same(numcpp n1, numcpp n2){
   if(n1.shape.size() != n2.shape.size())return false;
   for(int i=0;i<n1.shape.size();i++){
     if(n1.shape[i] != n2.shape[i])return false;
@@ -226,7 +303,7 @@ bool numcpp::chech_is_shape_same(numcpp& n1, numcpp& n2){
   return true;
 }
 
-numcpp& numcpp::operator+(numcpp& other){
+numcpp numcpp::operator+(numcpp other){
   numcpp newone(other.shape);
   if(chech_is_shape_same(*(this), other)){
     for(int i=0;i<this->number;i++){
@@ -235,7 +312,8 @@ numcpp& numcpp::operator+(numcpp& other){
   }
   return newone;
 }
-numcpp& numcpp::operator-(numcpp& other){
+
+numcpp numcpp::operator-(numcpp other){
   numcpp newone(other.shape);
   if(chech_is_shape_same(*(this), other)){
     for(int i=0;i<this->number;i++){
@@ -244,7 +322,8 @@ numcpp& numcpp::operator-(numcpp& other){
   }
   return newone;
 }
-numcpp& numcpp::operator*(numcpp& other){
+
+numcpp numcpp::operator*(numcpp other){
   numcpp newone(other.shape);
   if(chech_is_shape_same(*(this), other)){
     for(int i=0;i<this->number;i++){
@@ -253,7 +332,8 @@ numcpp& numcpp::operator*(numcpp& other){
   }
   return newone;
 }
-numcpp& numcpp::operator/(numcpp& other){
+
+numcpp numcpp::operator/(numcpp other){
   numcpp newone(other.shape);
   if(chech_is_shape_same(*(this), other)){
     for(int i=0;i<this->number;i++){
@@ -263,7 +343,38 @@ numcpp& numcpp::operator/(numcpp& other){
   }
   return newone;
 }
+numcpp numcpp::operator+(double other){
+  numcpp newone(this->shape);
+  for(int i=0;i<this->number;i++){
+      newone.data[i] = this->data[i] + other;
+  }
+  return newone;
+}
 
+numcpp numcpp::operator-(double other){
+  numcpp newone(this->shape);
+  for(int i=0;i<this->number;i++){
+      newone.data[i] = this->data[i] - other;
+  }
+  return newone;
+}
+
+numcpp numcpp::operator*(double other){
+  numcpp newone(this->shape);
+  for(int i=0;i<this->number;i++){
+      newone.data[i] = this->data[i] * other;
+  }
+  return newone;
+}
+
+numcpp numcpp::operator/(double other){
+  numcpp newone(this->shape);
+  for(int i=0;i<this->number;i++){
+      if(other == 0)throw "error: divided by 0";
+      newone.data[i] = this->data[i] / other;
+  }
+  return newone;
+}
 numcpp::~numcpp(){
   delete[] data;
 }
