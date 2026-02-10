@@ -27,20 +27,12 @@ numcpp::numcpp(std::vector<int> s){
   dimension = shape.size();
   number = temm;
 }
-numcpp::numcpp(std::initializer_list<int> s, int n){
-  int tem = 0;
-  int temm = 1;
-  for(int i: s){
-    tem += i;
-    temm *= i;
-    shape.push_back(i);
-  }
-  data = new double[temm];
-  sum_shape = tem;
-  dimension = shape.size();
-  number = temm;
-  for(int i=0;i<number;i++)data[i] = n;
+numcpp numcpp::Int(std::initializer_list<int> s, int n){
+  numcpp newone(s);
+  for(int i=0;i<newone.number;i++)newone.data[i] = n;
+  return newone;
 }
+
 numcpp::numcpp(numcpp& other){
   this->shape = other.shape;
   this->number = other.number;
@@ -50,48 +42,30 @@ numcpp::numcpp(numcpp& other){
   for(int i=0;i<number;i++)this->data[i] = other.data[i];
 }
 
-numcpp::numcpp(std::initializer_list<int> s, double mean, double variance){
+numcpp numcpp::normal(std::initializer_list<int> s, double mean, double variance){
   //seed random
   std::random_device rd;
   std::mt19937 gen(rd());
   std::normal_distribution<> distrib(mean, variance);
-  int tem = 0;
-  int temm = 1;
-  for(int i: s){
-    tem += i;
-    temm *= i;
-    shape.push_back(i);
-  }
-  data = new double[temm];
-  sum_shape = tem;
-  dimension = shape.size();
-  number = temm;
-  for(int i=0;i<number;i++)data[i] = distrib(gen);
+  numcpp newone(s);
+  for(int i=0;i<newone.number;i++)newone.data[i] = distrib(gen);
+  return newone;
 }
 
-numcpp::numcpp(std::initializer_list<int> s, double start, double end, std::string type){
+numcpp numcpp::uniform(std::initializer_list<int> s, double start, double end, std::string type){
   //seed random
   std::random_device rd;
   std::mt19937 gen(rd());
-  int tem = 0;
-  int temm = 1;
-  for(int i: s){
-    tem += i;
-    temm *= i;
-    shape.push_back(i);
-  }
-  data = new double[temm];
-  sum_shape = tem;
-  dimension = shape.size();
-  number = temm;
+  numcpp newone(s);
   
   if(type == "int"){
     std::uniform_int_distribution<int> distrib(start, end);
-    for(int i=0;i<number;i++)data[i] = (double)distrib(gen);
+    for(int i=0;i<newone.number;i++)newone.data[i] = (double)distrib(gen);
   }else{
     std::uniform_real_distribution<double> distrib(start, end);
-    for(int i=0;i<number;i++)data[i] = distrib(gen);
+    for(int i=0;i<newone.number;i++)newone.data[i] = distrib(gen);
   }
+  return newone;
 }
 
 //get index
