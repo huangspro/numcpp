@@ -153,13 +153,21 @@ void numcpp::print(){
   
   for(int i=0;i<dimension;i++){
     int temm = result.length();
-    for(int ii=temm;ii>0;ii--){  //operate reversely
-      if(ii==0)result.insert(ii, "[");
-      else if(ii==result.length()-1)result.insert(ii, "]");
+    result += "]" ;
+    for(int ii=temm-1;ii>=0;ii--){  //operate reversely
+      if(ii==0)result.insert(0, "[");
       else{
         if(ii%prepare[i] == 0)result.insert(ii, "][");
       }
     }
+  }
+  int temmm = result.length();
+  int index = --number;
+  for(int i=temmm-1;i>=0;i--){
+    if(result[i] == '#'){
+      result.replace(i, 1, " " + std::to_string(data[index]) + " ");
+      index --;
+    } 
   }
   std::cout<<result<<std::flush;
 }
