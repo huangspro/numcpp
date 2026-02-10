@@ -18,10 +18,10 @@ public:
   //construntor==========================================================================================================
   numcpp(std::initializer_list<int> s);           //using initializer_list as shape
   numcpp(std::vector<int> s);                     //receive a vector as shape
-  numcpp(std::initializer_list<int> s, int n);    //fill the array with integer n
+  static numcpp Int(std::initializer_list<int> s, int n);    //fill the array with integer n
   numcpp(numcpp& other);                    //copier
-  numcpp(std::initializer_list<int> s, double mean, double variance);    //randomly initialize the array, with mean and variance
-  numcpp(std::initializer_list<int> s, double start, double end, std::string type);  //with boundry and data type, excluding end
+  static numcpp normal(std::initializer_list<int> s, double mean, double variance);    //randomly initialize the array, with mean and variance
+  static numcpp uniform(std::initializer_list<int> s, double start, double end, std::string type);  //with boundry and data type, excluding end
   //=====================================================================================================================
   int getIndex(std::initializer_list<int> indexs);//get index
   double get(std::initializer_list<int> indexs);//get element by indexs
