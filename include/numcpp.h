@@ -18,6 +18,8 @@ public:
   //construntor==========================================================================================================
   numcpp(std::initializer_list<int> s);           //using initializer_list as shape
   numcpp(std::vector<int> s);                     //receive a vector as shape
+  numcpp numcpp::array(std::initializer_list<int> s);
+  numcpp numcpp::array(std::vector<int> s);
   static numcpp Int(std::initializer_list<int> s, int n);    //fill the array with integer n
   numcpp(numcpp& other);                    //copier
   static numcpp normal(std::initializer_list<int> s, double mean, double variance);    //randomly initialize the array, with mean and variance
