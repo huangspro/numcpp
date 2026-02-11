@@ -79,6 +79,18 @@ numcpp numcpp::uniform(std::initializer_list<int> s, double start, double end, s
   return newone;
 }
 
+numcpp randn(int size){
+  numcpp newone();
+} 
+
+numcpp arange(double start, double end, double step){
+  numcpp newone();
+} 
+
+numcpp linespace(double start, double end, int size){
+  numcpp newone();
+} 
+
 //get index
 int numcpp::getIndex(std::initializer_list<int> indexs){  
   //check if the indexs are valid
