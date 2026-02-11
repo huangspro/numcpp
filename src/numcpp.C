@@ -27,6 +27,17 @@ numcpp::numcpp(std::vector<int> s){
   dimension = shape.size();
   number = temm;
 }
+
+numcpp numcpp::array(std::initializer_list<int> s){
+  numcpp newone(s);
+  return newone;
+} 
+
+numcpp numcpp::array(std::vector<int> s){
+  numcpp newone(s);
+  return newone;
+} 
+
 numcpp numcpp::Int(std::initializer_list<int> s, int n){
   numcpp newone(s);
   for(int i=0;i<newone.number;i++)newone.data[i] = n;
