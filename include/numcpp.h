@@ -24,6 +24,8 @@ public:
   numcpp(numcpp& other);                    //copier
   static numcpp normal(std::initializer_list<int> s, double mean, double variance);    //randomly initialize the array, with mean and variance
   static numcpp uniform(std::initializer_list<int> s, double start, double end, std::string type);  //with boundry and data type, excluding end
+  static numcpp arange(double start, double end, double step);
+  static numcpp arange(double start, double end, int size);
   //=====================================================================================================================
   int getIndex(std::initializer_list<int> indexs);//get index
   double get(std::initializer_list<int> indexs);//get element by indexs
