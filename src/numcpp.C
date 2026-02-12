@@ -184,9 +184,10 @@ bool numcpp::set(std::initializer_list<int> indexs, double d){
 void numcpp::print(){
   std::vector<int> prepare;
   int tem = shape[shape.size()-1];
+  prepare.push_back(tem);
   for(int i=0;i<dimension-1;i++){
-    prepare.push_back(tem);
     tem = (tem + 2) * shape[shape.size()-i-2];
+prepare.push_back(tem);
   }
   prepare.push_back(tem);
   std::string result = "";
