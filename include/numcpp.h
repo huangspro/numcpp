@@ -18,8 +18,9 @@ public:
   //construntor==========================================================================================================
   numcpp(std::initializer_list<int> s);           //using initializer_list as shape
   numcpp(std::vector<int> s);                     //receive a vector as shape
-  static numcpp numcpp::array(std::initializer_list<int> s);
-  static numcpp numcpp::array(std::vector<int> s);
+  numcpp(int size);
+  static numcpp array(std::initializer_list<int> s);
+  static numcpp array(std::vector<int> s);
   static numcpp Int(std::initializer_list<int> s, int n);    //fill the array with integer n
   numcpp(numcpp& other);                    //copier
   static numcpp normal(std::initializer_list<int> s, double mean, double variance);    //randomly initialize the array, with mean and variance
@@ -29,10 +30,10 @@ public:
   static numcpp linespace(double start, double end, int size);
   //=====================================================================================================================
   int getIndex(std::initializer_list<int> indexs);//get index
-  double get(std::initializer_list<int> indexs);//get element by indexs
+  numcpp get(std::initializer_list<int> indexs);//get element by indexs
   bool set(std::initializer_list<int> indexs, double d);//set value by indexs
   void print();//print the whole array, using recursion
-  
+  void reshape(std::initializer_list<int> s);
   //operation to elements================================================================================================
   static void sin(numcpp);
   static void cos(numcpp);

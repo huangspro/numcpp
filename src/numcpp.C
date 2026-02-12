@@ -28,6 +28,14 @@ numcpp::numcpp(std::vector<int> s){
   number = temm;
 }
 
+numcpp::numcpp(int size){
+  shape.push_back(size);
+  data = new double[size];
+  sum_shape = size;
+  dimension = 1;
+  number = size;
+}
+
 numcpp numcpp::array(std::initializer_list<int> s){
   numcpp newone(s);
   return newone;
@@ -79,16 +87,27 @@ numcpp numcpp::uniform(std::initializer_list<int> s, double start, double end, s
   return newone;
 }
 
-numcpp randn(int size){
-  numcpp newone();
+numcpp numcpp::randn(int size){
+  numcpp newone(size);
+  //seed random
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  std::normal_distribution<> distrib(0, 1);
+  for(int i=0;i<size;i++)newone.data[i] = distrib(gen);
+  return newone;
 } 
 
-numcpp arange(double start, double end, double step){
-  numcpp newone();
+numcpp numcpp::arange(double start, double end, double step){
+  numcpp newone((int)((end - start) / step) + 1);
+  for(int i=0;i<newone.number;i++)newone.data[i] = start + i*step;
+  return newone;
 } 
 
-numcpp linespace(double start, double end, int size){
-  numcpp newone();
+numcpp numcpp::linespace(double start, double end, int size){
+  numcpp newone(size);
+  double tem = (end - start)/(double)size;
+  for(int i=0;i<size;i++)newone.data[i] = start + tem*i;
+  return newone;
 } 
 
 //get index
@@ -112,15 +131,42 @@ int numcpp::getIndex(std::initializer_list<int> indexs){
 }
   
 //get element by indexs
-double numcpp::get(std::initializer_list<int> indexs){  
-  int conduct = 1;
-  int result = 0;
-  for(int i = 0;i<shape.size()-1;i++){
-    conduct *= shape[shape.size()-i-1];
-    result += (*(indexs.begin() + shape.size()-i-2))*conduct;
+numcpp numcpp::get(std::initializer_list<int> indexs){  
+  if(shape.size() == indexs.size() && getIndex(indexs)!= -1){
+    numcpp newone(1);
+    newone.data[0] = data[getIndex(indexs)];
+    return newone;
   }
-  result += *(indexs.begin() + shape.size()-1); //add the last index
-  return data[result];
+  else if(shape.size() == indexs.size() && getIndex(indexs)== -1)throw "index out of boundary";
+  else{
+    int conduct = 1;
+    int result = 0;
+    //prepare for the calculation
+    int* prepare = new int[shape.size()];  
+    for(int i = shape.size()-1;i>=0;i--){
+      conduct *= shape[i];
+      prepare[i] = conduct;
+    }
+    //prepare for theresult
+    int length = prepare[indexs.size()];
+    numcpp newone(length);
+    newone.shape.clear();
+    
+    //calculate the shape and the starting index
+    for(int i=0;i<indexs.size();i++){
+      result += prepare[i+1] * (*(indexs.begin() + i));
+      newone.shape.push_back(shape[i+1]);
+    }
+    for(int i=0;i<shape.size();i++)newone.sum_shape+=shape[i];
+    newone.dimension = shape.size()-indexs.size();
+    
+    //write data
+    for(int i=0;i<length;i++){
+      newone.data[i] = data[result + i];
+    }
+    return newone;
+    delete[] prepare;
+  }
 }
   
 //set value by indexs
@@ -142,7 +188,7 @@ void numcpp::print(){
     prepare.push_back(tem);
     tem = (tem + 2) * shape[shape.size()-i-2];
   }
-  prepare.push_back(tem);std::cout<<tem<<std::endl;
+  prepare.push_back(tem);
   std::string result = "";
   for(int i=0;i<number;i++){
     result += "#";
@@ -166,7 +212,22 @@ void numcpp::print(){
       index --;
     } 
   }
-  std::cout<<result<<std::flush;
+  std::cout<<"array(\n"<<result<<"\n)"<<std::endl<<std::flush;
+}
+
+void numcpp::reshape(std::initializer_list<int> s){
+  int tem = 1;
+  int temm = 0;
+  for(int i=0;i<s.size();i++){
+    tem *= *(s.begin() + i);
+    temm += *(s.begin() + i);
+  }
+  if(tem != number)throw "reshape cannot be resolved";
+  else{
+    for(int i=0;i<s.size();i++)this->shape[i] = *(s.begin() + i);
+  }
+  dimension = shape.size();
+  sum_shape = temm;
 }
 
 //================================================================================================
