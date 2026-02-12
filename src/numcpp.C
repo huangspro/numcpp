@@ -206,7 +206,7 @@ prepare.push_back(tem);
     }
   }
   int temmm = result.length();
-  int index = --number;
+  int index = number - 1;
   for(int i=temmm-1;i>=0;i--){
     if(result[i] == '#'){
       result.replace(i, 1, " " + std::to_string(data[index]) + " ");
