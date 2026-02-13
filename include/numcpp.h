@@ -64,6 +64,7 @@ public:
   numcpp operator-(double other);
   numcpp operator*(double other);
   numcpp operator/(double other);
+  numcpp operator[](std::initializer_list<int> indexs);
   
   //tool method
   static bool chech_is_shape_same(numcpp, numcpp);
