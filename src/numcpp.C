@@ -219,17 +219,19 @@ prepare.push_back(tem);
 void numcpp::reshape(std::initializer_list<int> s){
   int tem = 1;
   int temm = 0;
+  shape.clear();
   for(int i=0;i<s.size();i++){
     tem *= *(s.begin() + i);
     temm += *(s.begin() + i);
   }
   if(tem != number)throw "reshape cannot be resolved";
   else{
-    for(int i=0;i<s.size();i++)this->shape[i] = *(s.begin() + i);
+    for(int i=0;i<s.size();i++)this->shape.push_back(*(s.begin() + i));
   }
   dimension = shape.size();
   sum_shape = temm;
 }
+
 
 //================================================================================================
 
@@ -442,6 +444,11 @@ numcpp numcpp::operator/(double other){
   }
   return newone;
 }
+
+numcpp numcpp::operator[](std::initializer_list<int> indexs){
+  return get(indexs);
+}
+
 numcpp::~numcpp(){
   delete[] data;
 }
