@@ -410,7 +410,7 @@ double numcpp::standard(numcpp n){
 }
 
 
-bool numcpp::chech_is_shape_same(numcpp n1, numcpp n2){
+bool numcpp::check_is_shape_same(numcpp n1, numcpp n2){
   if(n1.shape.size() != n2.shape.size())return false;
   for(int i=0;i<n1.shape.size();i++){
     if(n1.shape[i] != n2.shape[i])return false;
@@ -420,7 +420,7 @@ bool numcpp::chech_is_shape_same(numcpp n1, numcpp n2){
 
 numcpp numcpp::operator+(numcpp other){
   numcpp newone(other.shape);
-  if(chech_is_shape_same(*(this), other)){
+  if(check_is_shape_same(*(this), other)){
     for(int i=0;i<this->number;i++){
       newone.data[i] = this->data[i] + other.data[i];
     }
@@ -430,7 +430,7 @@ numcpp numcpp::operator+(numcpp other){
 
 numcpp numcpp::operator-(numcpp other){
   numcpp newone(other.shape);
-  if(chech_is_shape_same(*(this), other)){
+  if(check_is_shape_same(*(this), other)){
     for(int i=0;i<this->number;i++){
       newone.data[i] = this->data[i] - other.data[i];
     }
@@ -440,7 +440,7 @@ numcpp numcpp::operator-(numcpp other){
 
 numcpp numcpp::operator*(numcpp other){
   numcpp newone(other.shape);
-  if(chech_is_shape_same(*(this), other)){
+  if(check_is_shape_same(*(this), other)){
     for(int i=0;i<this->number;i++){
       newone.data[i] = this->data[i] * other.data[i];
     }
@@ -450,7 +450,7 @@ numcpp numcpp::operator*(numcpp other){
 
 numcpp numcpp::operator/(numcpp other){
   numcpp newone(other.shape);
-  if(chech_is_shape_same(*(this), other)){
+  if(check_is_shape_same(*(this), other)){
     for(int i=0;i<this->number;i++){
       if(other.data[i] == 0)throw "error: divided by 0";
       newone.data[i] = this->data[i] / other.data[i];

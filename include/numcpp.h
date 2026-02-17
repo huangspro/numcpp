@@ -75,7 +75,7 @@ public:
   void t();
   static numcpp matrix_mul(numcpp n1, numcpp n2);
   //tool method
-  static bool chech_is_shape_same(numcpp, numcpp);
+  static bool check_is_shape_same(numcpp, numcpp);
 
   ~numcpp();
 };
