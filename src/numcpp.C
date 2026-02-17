@@ -108,7 +108,45 @@ numcpp numcpp::linespace(double start, double end, int size){
   double tem = (end - start)/(double)size;
   for(int i=0;i<size;i++)newone.data[i] = start + tem*i;
   return newone;
-} 
+}
+
+numcpp numcpp::vector(int size){
+  numcpp newone(size);
+  return newone;
+}
+
+numcpp numcpp::vector(std::initializer_list<int> data){
+  numcpp newone(data.size());
+  for(int i=0;i<newone.number;i++){
+    newone.data[i] =*(data.begin() + i);
+  }
+  return newone;
+}
+
+numcpp numcpp::matrix(int row, int col){
+  numcpp newone;
+  newone.shape.clear();
+  newone.shape.push_back(row);
+  newone.shape.push_back(col);
+  newone.dimension = 2;
+  newone.sum_shape = row + col;
+  newone.number = row * col;
+  newone.data = new double[row * col];
+  return newone;
+}
+
+numcpp numcpp::matrix(std::initializer_list<std::initializer_list<int>> data){
+  numcpp newone = matrix(data.size(),  (*(data.begin())).size());
+  int tem = 0;
+  for(int i=0;i<data.size();i++){
+    for(int ii=0;ii<(*(data.begin())).size();ii++){
+      newone.data[tem] = *((*(data.begin() + i)).begin() + ii);
+      tem ++;
+    }
+  }
+  return newone;
+}
+//===================================================================================
 
 //get index
 int numcpp::getIndex(std::initializer_list<int> indexs){  
@@ -150,14 +188,17 @@ numcpp numcpp::get(std::initializer_list<int> indexs){
     //prepare for theresult
     int length = prepare[indexs.size()];
     numcpp newone(length);
+    newone.sum_shape = 0;
     newone.shape.clear();
     
     //calculate the shape and the starting index
     for(int i=0;i<indexs.size();i++){
       result += prepare[i+1] * (*(indexs.begin() + i));
-      newone.shape.push_back(shape[i+1]);
     }
-    for(int i=0;i<shape.size();i++)newone.sum_shape+=shape[i];
+    for(int i=indexs.size();i<shape.size();i++){
+      newone.sum_shape+=shape[i];
+      newone.shape.push_back(shape[i]);
+    }
     newone.dimension = shape.size()-indexs.size();
     
     //write data
@@ -187,7 +228,7 @@ void numcpp::print(){
   prepare.push_back(tem);
   for(int i=0;i<dimension-1;i++){
     tem = (tem + 2) * shape[shape.size()-i-2];
-prepare.push_back(tem);
+    prepare.push_back(tem);
   }
   prepare.push_back(tem);
   std::string result = "";
@@ -219,7 +260,6 @@ prepare.push_back(tem);
 void numcpp::reshape(std::initializer_list<int> s){
   int tem = 1;
   int temm = 0;
-  shape.clear();
   for(int i=0;i<s.size();i++){
     tem *= *(s.begin() + i);
     temm += *(s.begin() + i);
@@ -227,12 +267,18 @@ void numcpp::reshape(std::initializer_list<int> s){
   if(tem != number)throw "reshape cannot be resolved";
   else{
     for(int i=0;i<s.size();i++)this->shape.push_back(*(s.begin() + i));
+    shape.clear();
+    dimension = shape.size();
+    sum_shape = temm;
   }
-  dimension = shape.size();
-  sum_shape = temm;
 }
 
-
+void numcpp::view(){
+  shape.clear();
+  shape.push_back(number);
+  sum_shape = number;
+  dimension = 1;
+}
 //================================================================================================
 
 void numcpp::sin(numcpp n){
@@ -447,6 +493,13 @@ numcpp numcpp::operator/(double other){
 
 numcpp numcpp::operator[](std::initializer_list<int> indexs){
   return get(indexs);
+}
+
+//=================================================================================================
+numcpp matrix_mul(numcpp n1, numcpp n2){
+  if(n1.shape[1] != n2.shape[0])throw "matrix sizes do not match";
+  numcpp newone = matrix(n1.shape[0], n2.shape[1]);
+  for(int i=0;i<
 }
 
 numcpp::~numcpp(){
