@@ -510,6 +510,7 @@ numcpp numcpp::matrix_mul(numcpp n1, numcpp n2){
       newone.data[i*n2.shape[1] + j - 1] = result;
     }
   }
+  return newone;
 }
 
 void numcpp::t() {
@@ -518,7 +519,9 @@ void numcpp::t() {
     for(int j=0;j<shape[1];j++){
       newonedata[j * shape[1] + i - 1] = data[i * shape[1] + j - 1];
     } 
-  } 
+  }
+  delete[] data;
+  data = newonedata;
 }
 
 numcpp::~numcpp(){
