@@ -515,11 +515,15 @@ numcpp numcpp::matrix_mul(numcpp n1, numcpp n2){
 
 void numcpp::t() {
   double* newonedata = new double[number];
+  if(shape.size() != 2)throw "this is not a matrix" ;
   for(int i=0;i<shape[0];i++){
     for(int j=0;j<shape[1];j++){
       newonedata[j * shape[1] + i - 1] = data[i * shape[1] + j - 1];
     } 
   }
+  int tem = shape[1];
+  shape[1] = shape[0];
+  shape[0] = tem;
   delete[] data;
   data = newonedata;
 }
