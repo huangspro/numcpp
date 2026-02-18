@@ -499,9 +499,15 @@ numcpp numcpp::operator[](std::initializer_list<int> indexs){
 numcpp matrix_mul(numcpp n1, numcpp n2){
   if(n1.shape[1] != n2.shape[0])throw "matrix sizes do not match";
   numcpp newone = matrix(n1.shape[0], n2.shape[1]);
+  double result = 0;
   for(int i=0;i<n1.shape[0];i++){
     for(int j=0;j<n2.shape[1];j++){
-      newone.data[i*n2.shape[1] + j - 1] = 
+      for(int x=0;x<n1.shape[1];x++){
+        for(int y=0;y<n1.shape[0];y++){
+          result += n1.data[i*n1.shape[1] + x - 1] * n2.data[y*n2.shape[1] + x - 1] 
+        } 
+      } 
+      newone.data[i*n2.shape[1] + j - 1] = result;
     }
   }
 }
