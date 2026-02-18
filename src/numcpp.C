@@ -512,6 +512,15 @@ numcpp numcpp::matrix_mul(numcpp n1, numcpp n2){
   }
 }
 
+void numcpp::t() {
+  double* newonedata = new double[number];
+  for(int i=0;i<shape[0];i++){
+    for(int j=0;j<shape[1];j++){
+      newonedata[j * shape[1] + i - 1] = data[i * shape[1] + j - 1];
+    } 
+  } 
+}
+
 numcpp::~numcpp(){
   delete[] data;
 }
